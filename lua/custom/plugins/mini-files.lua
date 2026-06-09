@@ -11,4 +11,4 @@ vim.keymap.set('n', '\\', function()
   else
     MiniFiles.open()
   end
-end, { desc = 'NeoTree reveal', silent = true })
+end, { desc = 'Mini files toggle', silent = true })
