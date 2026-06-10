@@ -180,6 +180,7 @@ do
   --  See `:help hlsearch`
   vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
   vim.keymap.set('n', '<leader>u', '<cmd>:update<CR>')
+  vim.keymap.set('n', '<leader>bo', '<cmd>%bd|e#|bd#<cr>', { desc = 'Close all buffers except current' })
 
   -- Diagnostic Config & Keymaps
   --  See `:help vim.diagnostic.Opts`
@@ -808,7 +809,6 @@ do
       javascript = { 'prettierd', 'prettier', stop_after_first = true },
     },
   }
-
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
 end
 
@@ -955,20 +955,6 @@ do
     end,
   })
 end
-
-vim.pack.add {
-  {
-    src = gh 'nvimtools/none-ls-extras.nvim',
-    version = 'main',
-  },
-}
-vim.pack.add { { src = gh 'nvimtools/none-ls.nvim', version = 'main' } }
-
-require('null-ls').setup {
-  sources = {
-    require 'none-ls.diagnostics.eslint',
-  },
-}
 
 vim.pack.add {
   {
