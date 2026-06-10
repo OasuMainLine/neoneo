@@ -1,14 +1,8 @@
-# kickstart.nvim
+# neoneo.nvim
 
 ## Introduction
 
-A starting point for Neovim that is:
-
-* Small
-* Single-file
-* Completely Documented
-
-**NOT** a Neovim distribution, but instead a starting point for your configuration.
+Configuration derived from [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
 
 ## Installation
 
@@ -29,6 +23,7 @@ alternative [installation methods below](#alternative-neovim-installation-method
 ### Install External Dependencies
 
 External Requirements:
+
 - Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
 - [ripgrep](https://github.com/BurntSushi/ripgrep#installation),
   [fd-find](https://github.com/sharkdp/fd#installation)
