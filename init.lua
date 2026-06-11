@@ -974,5 +974,14 @@ do
   require 'custom.plugins'
 end
 
+-- Custom commands
+--
+do
+  vim.api.nvim_create_user_command('RelPath', function()
+    local rel_path = vim.fn.expand '%:.'
+    vim.fn.setreg('+', rel_path)
+    print(rel_path)
+  end, { desc = 'Copy the relative path to the current buffer' })
+end
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
