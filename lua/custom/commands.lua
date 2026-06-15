@@ -37,4 +37,24 @@ do
       args = { abs_path },
     }, function() print 'Started dolphin instance' end)
   end, { desc = 'Opens current buffer in the file system' })
+
+  -- Rust only
+  --
+
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'rust',
+    callback = function(ev)
+      vim.api.nvim_buf_create_user_command(ev.buf, 'RustCheck', function()
+        local clients = vim.lsp.get_clients {
+          bufnr = 0,
+          name = 'rust_analyzer',
+        }
+
+        for _, client in ipairs(clients) do
+          local params = vim.lsp.util.make_text_document_params()
+          client:notify('rust-analyzer/runFlycheck', params)
+        end
+      end, { desc = 'Run check analyzer against current buffer' })
+    end,
+  })
 end
