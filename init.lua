@@ -92,8 +92,7 @@ do
   -- Enable faster startup by caching compiled Lua modules
   vim.loader.enable()
 
-
-  require "vim-opts"
+  require 'vim-opts'
   -- [[ Basic Keymaps ]]
   --  See `:help vim.keymap.set()`
 
@@ -104,6 +103,8 @@ do
   -- Custom keymaps
   vim.keymap.set('n', '<leader>u', '<cmd>update<CR>', { desc = 'Updates the current buffer if it changed' })
   vim.keymap.set('n', '<leader>bo', '<cmd>%bd|e#|bd#<cr>', { desc = 'Close all buffers except current' })
+
+  vim.keymap.set('n', '<leader>bx', '<cmd>:bd!<cr>', { desc = 'Close current buffer' })
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename symbol' })
 
   -- Diagnostic Config & Keymaps
@@ -437,6 +438,7 @@ do
     gh 'nvim-lua/plenary.nvim',
     gh 'nvim-telescope/telescope.nvim',
     gh 'nvim-telescope/telescope-ui-select.nvim',
+    gh 'nvim-telescope/telescope-live-grep-args.nvim',
   }
   if vim.fn.executable 'make' == 1 then table.insert(telescope_plugins, gh 'nvim-telescope/telescope-fzf-native.nvim') end
 
@@ -462,6 +464,7 @@ do
   -- Enable Telescope extensions if they are installed
   pcall(require('telescope').load_extension, 'fzf')
   pcall(require('telescope').load_extension, 'ui-select')
+  pcall(require('telescope').load_extension, 'live_grep_args')
 
   -- See `:help telescope.builtin`
   local builtin = require 'telescope.builtin'
@@ -470,7 +473,7 @@ do
   vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
   vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
   vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-  vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+  vim.keymap.set('n', '<leader>sg', function() require('telescope').extensions.live_grep_args.live_grep_args() end, { desc = '[S]earch by [G]rep' })
   vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
   vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
   vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -915,24 +918,14 @@ do
   })
 end
 
-vim.pack.add {
-  {
-    src = gh 'linux-cultist/venv-selector.nvim',
-    version = 'main',
-  },
-}
-
-require('venv-selector').setup()
-
 do
   -- require 'kickstart.plugins.debug'
   require 'kickstart.plugins.lint'
   require 'kickstart.plugins.autopairs'
-  -- require 'kickstart.plugins.neo-tree'
   require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
-  require 'custom.plugins'
-  require 'custom.commands'
-  require 'custom.autocmds'
+  require 'plugins'
+  require 'commands'
+  require 'autocmds'
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`

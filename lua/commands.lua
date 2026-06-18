@@ -32,10 +32,10 @@ do
   vim.api.nvim_create_user_command('OpenInFileSystem', function()
     local abs_path = vim.api.nvim_buf_get_name(0)
     abs_path = vim.fs.dirname(abs_path)
-    vim.uv.spawn('dolphin', {
+    vim.uv.spawn('xdg-open', {
       stdio = { nil, nil, nil },
       args = { abs_path },
-    }, function() print 'Started dolphin instance' end)
+    }, function() print 'Started explorer instance' end)
   end, { desc = 'Opens current buffer in the file system' })
 
   -- Rust only
