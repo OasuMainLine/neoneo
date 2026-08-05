@@ -704,6 +704,7 @@ do
     ts_ls = {},
     ruby_lsp = {},
     stylua = {},
+    ["nil"] = {},
 
     -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
@@ -819,6 +820,7 @@ do
       -- You can use 'stop_after_first' to run the first available formatter from the list
       javascript = { 'prettierd', 'prettier', stop_after_first = true },
       typescript = { 'prettierd', 'prettier', 'ts_ls', stop_after_first = true },
+      nix = { "alejandra" }
     },
   }
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
