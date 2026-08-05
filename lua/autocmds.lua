@@ -15,8 +15,6 @@ do
     desc = 'Runs rust check after leaving insert mode',
     pattern = '*.rs',
     group = custom_group,
-    callback = function()
-	vim.cmd 'RustCheck'
-    end,
+    callback = function() vim.cmd 'RustCheck' end,
   })
 end

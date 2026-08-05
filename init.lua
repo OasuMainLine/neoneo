@@ -363,7 +363,7 @@ do
 
   -- [[ mini.nvim ]]
   --  A collection of various small independent plugins/modules
-  vim.pack.add { gh 'nvim-mini/mini.nvim' }
+  vim.pack.add { gh 'navim-mini/mini.nvim' }
 
   -- Better Around/Inside textobjects
   --
@@ -450,12 +450,23 @@ do
     -- You can put your default mappings / updates / etc. in here
     --  All the info you're looking for is in `:help telescope.setup()`
     --
-    -- defaults = {
-    --   mappings = {
-    --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-    --   },
-    -- },
-    -- pickers = {}
+    defaults = {
+      vimgrep_arguments = {
+        'rg',
+        '--hidden',
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--smart-case',
+      },
+    },
+    pickers = {
+      find_files = {
+        hidden = true,
+      },
+    },
     extensions = {
       ['ui-select'] = { require('telescope.themes').get_dropdown() },
     },
@@ -478,7 +489,31 @@ do
   vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
   vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
   vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
+  vim.keymap.set(
+    'n',
+    '<leader>stc',
+    function() builtin.live_grep { default_text = '^(<<<<<<<|=======|>>>>>>>)', initial_mode = 'normal', title = 'Git Conflicts' } end,
+    { desc = '[S]earch by Gi[t] [C]onflicts' }
+  )
   vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+  -- Create .ignore file that shows usually hidden files by .gitignore (if it doesn't exists)
+  do
+    local home = vim.fn.expand '~'
+    local ignore_file_path = vim.fs.joinpath(home, '.ignore')
+    local ignore_file = io.open(ignore_file_path, 'r')
+    if ignore_file == nil then
+      ignore_file = io.open(ignore_file_path, 'w')
+      if ignore_file == nil then
+        vim.notify('Unable to create .ignore file', vim.log.levels.WARN)
+      else
+        local ignore_entries = { '!conf/*', '!.env', '!.env.*', '!**/.local' }
+        local ignore_content = table.concat(ignore_entries, '\n')
+        ignore_file:write(ignore_content)
+        ignore_file:close()
+      end
+    end
+  end
 
   -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
   -- If you later switch picker plugins, this is where to update these mappings.
@@ -597,6 +632,9 @@ do
       --  Most Language Servers support renaming across files, etc.
       map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
 
+      -- Hover the variable under the cursor
+      -- This displays extra information about that variable
+      map('grh', vim.lsp.buf.hover, '[G]et [H]over')
       -- Execute a code action, usually your cursor needs to be on top of an error
       -- or a suggestion from your LSP for this to activate.
       map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
@@ -738,6 +776,8 @@ end
 -- ============================================================
 do
   -- [[ Formatting ]]
+  local hints = require 'hints'
+
   vim.pack.add { gh 'stevearc/conform.nvim' }
   require('conform').setup {
     notify_on_error = false,
@@ -764,11 +804,21 @@ do
     formatters_by_ft = {
       rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
-      python = { 'isort', 'black' },
-      --
+      python = function(bufnr)
+        local base_fmts = {}
+        if hints.installed(bufnr, 'ruff') then
+          table.insert(base_fmts, 'ruff_format')
+          return base_fmts
+        end
+
+        table.insert(base_fmts, 'black')
+        return base_fmts
+      end,
+
       ruby = { 'rubocop' },
       -- You can use 'stop_after_first' to run the first available formatter from the list
       javascript = { 'prettierd', 'prettier', stop_after_first = true },
+      typescript = { 'prettierd', 'prettier', 'ts_ls', stop_after_first = true },
     },
   }
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })

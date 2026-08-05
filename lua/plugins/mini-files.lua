@@ -10,7 +10,12 @@ vim.keymap.set('n', '\\', function()
     MiniFiles.close()
   else
     local current_buffer = vim.api.nvim_buf_get_name(0)
-    MiniFiles.open(current_buffer, false)
+    local target_path = vim.fn.getcwd()
+    local current_buffer_stat = current_buffer ~= '' and vim.uv.fs_stat(current_buffer) or nil
+
+    if current_buffer_stat and current_buffer_stat.type == 'file' then target_path = current_buffer end
+
+    MiniFiles.open(target_path, false)
     MiniFiles.reveal_cwd()
   end
 end, { desc = 'Mini files toggle', silent = true })

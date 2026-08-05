@@ -8,6 +8,7 @@ require('neovim-project').setup {
   projects = {
     '~/Documents/development/personal/*',
     '~/Documents/development/work/groups360/repos/*',
+    '~/.config/nvim'
   },
   picker = {
     type = 'telescope',
