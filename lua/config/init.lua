@@ -1,14 +1,17 @@
 ---@class Config
 ---@field use_mason boolean
+---@field ignore_entries string[]
 ---@field project_directories string[]
 
 ---@class PartialConfig
 ---@field use_mason? boolean
+---@field ignore_entries? string[]
 ---@field project_directories? string[]
 
 ---@type Config
 local M = {
   use_mason = true,
+  ignore_entries = { '!conf/*', '!.env', '!.env.*', '!**/.local', 'local_config.lua'},
   project_directories = {},
 }
 

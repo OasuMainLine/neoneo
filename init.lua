@@ -510,8 +510,7 @@ do
       if ignore_file == nil then
         vim.notify('Unable to create .ignore file', vim.log.levels.WARN)
       else
-        local ignore_entries = { '!conf/*', '!.env', '!.env.*', '!**/.local' }
-        local ignore_content = table.concat(ignore_entries, '\n')
+        local ignore_content = table.concat(config.ignore_entries, '\n')
         ignore_file:write(ignore_content)
         ignore_file:close()
       end
