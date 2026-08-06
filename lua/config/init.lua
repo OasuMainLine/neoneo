@@ -11,7 +11,7 @@
 ---@type Config
 local M = {
   use_mason = true,
-  ignore_entries = { '!conf/*', '!.env', '!.env.*', '!**/.local', 'local_config.lua'},
+  ignore_entries = { '!conf/*', '!.env', '!.env.*', '!**/.local', '!local_config.lua'},
   project_directories = {},
 }
 

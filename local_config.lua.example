@@ -1,4 +1,4 @@
 ---@type PartialConfig
 return {
-  -- ignore_entries = { '!conf/*', '!.env', '!.env.*', '!**/.local', 'local_config.lua'},
+  -- ignore_entries = { '!conf/*', '!.env', '!.env.*', '!**/.local', '!local_config.lua'},
 }
