@@ -1,3 +1,9 @@
+---@type Config
+local config = require 'config'
+
+local projects = { '~/.config/nvim' }
+vim.list_extend(projects, config.project_directories)
+
 vim.pack.add { {
   src = gh 'Shatur/neovim-session-manager',
 }, {
@@ -5,11 +11,7 @@ vim.pack.add { {
 } }
 
 require('neovim-project').setup {
-  projects = {
-    '~/Documents/development/personal/*',
-    '~/Documents/development/work/groups360/repos/*',
-    '~/.config/nvim'
-  },
+  projects = projects,
   picker = {
     type = 'telescope',
   },
