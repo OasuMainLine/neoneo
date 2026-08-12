@@ -51,9 +51,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --  Most Language Servers support renaming across files, etc.
     map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
 
-    -- Hover the variable under the cursor
-    -- This displays extra information about that variable
-    map('grh', vim.lsp.buf.hover, '[G]et [H]over')
     -- Execute a code action, usually your cursor needs to be on top of an error
     -- or a suggestion from your LSP for this to activate.
     map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
