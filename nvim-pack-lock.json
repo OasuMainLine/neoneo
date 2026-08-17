@@ -44,8 +44,7 @@
     },
     "neo-tree.nvim": {
       "rev": "83e7a2982fd12b9c3d35bc39dd5877cd91a02a61",
-      "src": "https://github.com/nvim-neo-tree/neo-tree.nvim",
-      "version": ">=0.0.0"
+      "src": "https://github.com/nvim-neo-tree/neo-tree.nvim"
     },
     "neovim-project": {
       "rev": "f4e9b3392dc46b6e615b629a40ea4fa47cc2a203",
@@ -57,13 +56,11 @@
     },
     "none-ls-extras.nvim": {
       "rev": "27681d797a26f1b4d6119296df42f5204c88a2dc",
-      "src": "https://github.com/nvimtools/none-ls-extras.nvim",
-      "version": "'main'"
+      "src": "https://github.com/nvimtools/none-ls-extras.nvim"
     },
     "none-ls.nvim": {
       "rev": "01f8e62ea11603e59ad9ff7afcfa94fd183f76d6",
-      "src": "https://github.com/nvimtools/none-ls.nvim",
-      "version": "'main'"
+      "src": "https://github.com/nvimtools/none-ls.nvim"
     },
     "nui.nvim": {
       "rev": "de740991c12411b663994b2860f1a4fd0937c130",
