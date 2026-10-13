@@ -10,19 +10,13 @@ do
   vim.loader.enable()
 
   require 'vim-opts'
+  require 'keymaps'
   -- [[ Basic Keymaps ]]
   --  See `:help vim.keymap.set()`
 
   -- Clear highlights on search when pressing <Esc> in normal mode
   --  See `:help hlsearch`
   vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
-  -- Custom keymaps
-  vim.keymap.set('n', '<leader>u', '<cmd>update<CR>', { desc = 'Updates the current buffer if it changed' })
-  vim.keymap.set('n', '<leader>bo', '<cmd>%bd|e#|bd#<cr>', { desc = 'Close all buffers except current' })
-
-  vim.keymap.set('n', '<leader>bx', '<cmd>:bd!<cr>', { desc = 'Close current buffer' })
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename symbol' })
 
   -- Diagnostic Config & Keymaps
   --  See `:help vim.diagnostic.Opts`
@@ -196,6 +190,7 @@ end
 ---@param repo string
 ---@return string
 function gh(repo) return 'https://github.com/' .. repo end
+function codeberg(repo) return 'https://codeberg.com/' .. repo end
 
 -- ============================================================
 -- SECTION 3: UI / CORE UX PLUGINS
@@ -520,6 +515,8 @@ do
         typescript = true,
         rust = true,
         ruby = true,
+        java = true,
+        typst = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
         return { timeout_ms = 500 }
@@ -545,11 +542,13 @@ do
         return base_fmts
       end,
 
+      lua = { 'stylua' },
+
       ruby = { 'rubocop' },
       -- You can use 'stop_after_first' to run the first available formatter from the list
       javascript = { 'prettierd', 'prettier', stop_after_first = true },
       typescript = { 'prettierd', 'prettier', 'ts_ls', stop_after_first = true },
-      nix = { "alejandra" }
+      nix = { 'alejandra' },
     },
   }
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
@@ -651,7 +650,7 @@ do
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
   -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'typst', 'vim', 'vimdoc' }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer

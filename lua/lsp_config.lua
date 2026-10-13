@@ -28,6 +28,8 @@
 vim.pack.add { gh 'j-hui/fidget.nvim' }
 require('fidget').setup {}
 
+local list_utils = require 'utils/list'
+
 local config = require 'config'
 
 --  This function gets run when an LSP attaches to a particular buffer.
@@ -121,7 +123,16 @@ local servers = {
   -- But for many setups, the LSP (`ts_ls`) will work just fine
   ts_ls = {},
   ruby_lsp = {},
-  ["nil"] = {},
+
+  -- Typst language server. Provides completion, hover, diagnostics, and
+  -- formatting (via the bundled `typstyle` formatter).
+  tinymist = {
+    settings = {
+      formatterMode = 'typstyle',
+    },
+  },
+
+  jdtls = {},
 
   -- Special Lua Config, as recommended by neovim help docs
   lua_ls = {
@@ -158,10 +169,20 @@ local servers = {
   },
 }
 
+if vim.fn.executable 'devenv' == 1 then
+  servers['devenv'] = require 'custom_lsp/devenv'
+else
+  servers['nil'] = {}
+end
+
 local ensure_installed = vim.tbl_keys(servers)
 
 if config.use_mason then
   require 'mason_config'
+
+  local excluded_servers = { 'devenv' }
+
+  list_utils.exclude_from(ensure_installed, excluded_servers)
 
   vim.list_extend(ensure_installed, {
     -- You can add other tools here that you want Mason to install
